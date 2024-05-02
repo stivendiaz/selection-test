@@ -6,7 +6,7 @@ import express, {
   Response as ExResponse,
   Request as ExRequest,
 } from 'express';
-import { RegisterRoutes } from '../build/routes';
+import { RegisterRoutes } from './routes';
 
 export const app = express();
 
