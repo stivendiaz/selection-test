@@ -1,8 +1,7 @@
 // src/server.ts
 import { app } from './app';
+import { config } from './shared/config';
 
-const port = process.env.PORT || 3000;
-
-app.listen(port, () =>
-  console.log(`Todo app listening at http://localhost:${port}`)
+app.listen(config.port, () =>
+  console.log(`Todo app listening at http://localhost:${config.port}`)
 );
