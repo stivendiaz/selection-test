@@ -11,8 +11,12 @@ export const validate =
       return next();
     } catch (error) {
       if (error instanceof ZodError) {
-        logger.info(error.format());
-        throw new HttpException(HttpStatus.UNPROCESSABLE_ENTITY, '');
+        logger.info(error.flatten());
+        throw new HttpException(
+          HttpStatus.UNPROCESSABLE_ENTITY,
+          '',
+          error.flatten()
+        );
       }
       throw new HttpException(
         HttpStatus.INTERNAL_SERVER_ERROR,
