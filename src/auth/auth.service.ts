@@ -1,5 +1,6 @@
 import argon2 from 'argon2';
 import jwt from 'jsonwebtoken';
+import { addHours } from 'date-fns';
 import HttpException from '../shared/applitacion/exception/http-exception';
 import { DataStoredInToken } from '../shared/domain/interfaces/dataStoredInToken';
 import prisma from '../shared/infrastructure/lib/prisma';
@@ -33,6 +34,14 @@ class AuthService {
       { expiresIn: config.accessTokenLifetime as string }
     );
 
+    await prisma.resetTokens.create({
+      data: {
+        token,
+        email,
+        expiresAt: addHours(new Date(), 2),
+      },
+    });
+
     return { success: true, accessToken: token, user };
   };
 
@@ -62,6 +71,14 @@ class AuthService {
         { expiresIn: config.accessTokenLifetime as string }
       );
 
+      await prisma.resetTokens.create({
+        data: {
+          token: accessToken,
+          email,
+          expiresAt: addHours(new Date(), 2),
+        },
+      });
+
       return { success: true, accessToken, user: userData };
     } else throw new HttpException(400, 'Invalid Password');
   };
@@ -90,6 +107,30 @@ class AuthService {
     logger.info(record);
 
     if (!record) throw new HttpException(400, 'Token is invalid or expired');
+
+    return { success: true };
+  };
+
+  logout = async (body: IVerifyPasswordResetToken) => {
+    const { token, email } = body;
+
+    const record = await prisma.resetTokens.findFirst({
+      where: {
+        email,
+        token,
+      },
+    });
+
+    logger.info(record);
+
+    if (!record) throw new HttpException(400, 'Token is invalid or expired');
+
+    await prisma.resetTokens.deleteMany({
+      where: {
+        email,
+        token,
+      },
+    });
 
     return { success: true };
   };

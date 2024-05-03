@@ -341,6 +341,37 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/api/auth/logout',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(AuthController)),
+            ...(fetchMiddlewares<RequestHandler>(AuthController.prototype.logout)),
+
+            async function AuthController_logout(request: ExRequest, response: ExResponse, next: any) {
+            const args: Record<string, TsoaRoute.ParameterSchema> = {
+                    body: {"in":"body","name":"body","required":true,"ref":"IVerifyPasswordResetToken"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args, request, response });
+
+                const controller = new AuthController();
+
+              await templateService.apiHandler({
+                methodName: 'logout',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.post('/api/auth/me',
             authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(AuthController)),

@@ -36,6 +36,18 @@ export const expressAuthentication = async (
       if (!user) {
         throw new HttpException(401, 'Invalid token');
       }
+
+      const record = await prisma.resetTokens.findFirst({
+        where: {
+          email: user.email,
+          token,
+        },
+      });
+
+      if (!record) {
+        throw new HttpException(401, 'Invalid token');
+      }
+
       return user;
     } catch (error) {
       let message;

@@ -57,6 +57,20 @@ export class AuthController {
   }
 
   /**
+   * Logout the current user.
+   * @param body
+   * @param body.token Token to verify
+   * @param body.email Email of the user
+   */
+  @Post('/logout')
+  @Security('jwt')
+  async logout(
+    @Body() body: IVerifyPasswordResetToken
+  ): Promise<{ success: boolean }> {
+    return await authService.logout(body);
+  }
+
+  /**
    * Get the current user.
    */
   @Post('/me')
