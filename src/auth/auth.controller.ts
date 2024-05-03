@@ -11,6 +11,7 @@ import {
 } from './auth.interface';
 import authService from './auth.service';
 import { loginSchema, signupSchema } from './auth.validation';
+import limiter from '../shared/infrastructure/middleware/rate-limit.middelware';
 
 @Route('auth')
 @Tags('Auth')
@@ -23,7 +24,7 @@ export class AuthController {
    *
    */
   @Post('/login')
-  @Middlewares(validate(loginSchema))
+  @Middlewares(validate(loginSchema), limiter)
   async login(@Body() body: ISignInInput): Promise<IAuthPayload> {
     return await authService.signin(body);
   }

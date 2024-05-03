@@ -7,13 +7,14 @@ import { notFoundMiddleware } from './shared/infrastructure/middleware/not-found
 import { RegisterRoutes } from './routes';
 import swaggerJson from './swagger.json';
 import logger from './shared/infrastructure/utils/logger';
+import helmet from 'helmet';
 
 const app = express();
 
 app.use(loggerMiddleware);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.use(helmet());
 try {
   app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerJson));
 } catch (err) {

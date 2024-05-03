@@ -1,5 +1,5 @@
 // src/server.ts
-import { app } from './app';
+import app from './app';
 import { config } from './shared/config';
 
 app.listen(config.port, () =>
