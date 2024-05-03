@@ -11,7 +11,7 @@ import {
 } from './auth.interface';
 import authService from './auth.service';
 import { loginSchema, signupSchema } from './auth.validation';
-import limiter from '../shared/infrastructure/middleware/rate-limit.middelware';
+import { limiter } from '../shared/infrastructure/middleware/rate-limit.middelware';
 
 @Route('auth')
 @Tags('Auth')
